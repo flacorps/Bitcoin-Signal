@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+# Try to use gradle wrapper if present, else use gradle from PATH
+if [ -x "./gradlew" ] && [ "./gradlew" != "$0" ]; then
+  exec ./gradlew "$@"
+else
+  if command -v gradle >/dev/null 2>&1; then
+    gradle "$@"
+  else
+    echo "Gradle not found. The GitHub Action will install Gradle via setup-java and should provide ./gradlew. Exiting."
+    exit 1
+  fi
+fi
